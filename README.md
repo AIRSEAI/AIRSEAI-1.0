@@ -1,7 +1,7 @@
 # AIRSEAI: Empowering Intelligent Robots through Embodied AI, Stronger United, Yet Distinct.
 
 Welcome to AIRSEAI GitLab page!
-[AIRSEAI](http://airs.airseai.com) is an open-sourced embodied AI robotic software stack to empower various forms of intelligent robots. 
+[AIRSEAI](https://airs.cuhk.edu.cn/en/airseai) is an open-sourced embodied AI robotic software stack to empower various forms of intelligent robots. 
 
 ## Table of Contents
 
@@ -39,7 +39,7 @@ AIRSEAI is distinguished by the following characteristics:
   * LiDAR: RoboSense Helios 32
   * RGBD camera for navigation: Stereo Labs Zed2 
 ### Wheeled robot
-  * [AirsBot2](http://airs.airseai.com)
+  * [AirsBot2](https://airs.cuhk.edu.cn/en/airseai)
 ### Robotic arm and gripper
   * Elephant Robotics mycobot 630
   * Elephant Robotics pro adaptive gripper
@@ -114,7 +114,7 @@ bash ${DIR_AIRSEAI}/src/airseai/scripts/software_setup/install_docker.sh
 # Assuming the docker image is under $HOME.
 sudo systemctl enable docker
 sudo systemctl start docker
-docker load -i $HOME/airseai_image.tar
+docker load -i $HOME/airship_image.tar
 ```
 
 4. Create Docker container
