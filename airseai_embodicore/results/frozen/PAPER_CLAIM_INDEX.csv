@@ -1,0 +1,22 @@
+layer,claim,value,source,provenance
+semantic,legal condition cache max abs output error,1.27e-7,PART3_FROZEN_SUMMARY.json,frozen claim record
+semantic,illegal scan carry output error,2.86e-3,PART3_FROZEN_SUMMARY.json,frozen claim record
+semantic,stale condition within-episode mean action L2,0.329,PART3_FROZEN_SUMMARY.json,frozen claim record
+semantic,stale condition reset mean action L2,10.61,PART3_FROZEN_SUMMARY.json,frozen claim record
+dse,all candidates,4096,PART3_FROZEN_SUMMARY.json,frozen claim record; raw copied if discovered
+dse,resource-feasible candidates,3664,PART3_FROZEN_SUMMARY.json,frozen claim record; raw copied if discovered
+dse,legal+feasible candidates,687,PART3_FROZEN_SUMMARY.json,frozen claim record; raw copied if discovered
+dse,best legal candidate,759,PART3_FROZEN_SUMMARY.json,frozen claim record
+dse,balanced agnostic winner,4087,PART3_FROZEN_SUMMARY.json,frozen claim record
+fidelity,P1 action p99 L2,8.86e-4,PART3_FROZEN_SUMMARY.json,900 policy invocations
+fidelity,P1 action max L2,1.29e-3,PART3_FROZEN_SUMMARY.json,900 policy invocations
+fidelity,P1 passes,900/900,PART3_FROZEN_SUMMARY.json,epsilon_a=0.10
+rtl,condition ingress reduction,10x,PART4_MAC_FINAL.json,immutable pre-handoff frozen record
+rtl,required scan resets,9000/9000,PART4_MAC_FINAL.json,immutable pre-handoff frozen record
+rtl,agnostic stale condition uses,8990,PART4_MAC_FINAL.json,explicit no-reset stress
+rtl,agnostic illegal scan carries,8999,PART4_MAC_FINAL.json,explicit no-reset stress
+rtl,generic semantic controller delta,+1 LUT / +0 FF,PART4_MAC_FINAL.json,Yosys/ABC
+fpga,self-test top,294 LUT / 252 FF,PG2K400_PHYSICAL_RESULTS.json + screenshot,post-handoff physical anchor
+fpga,condition ingress,173 LUT / 162 FF,PG2K400_PHYSICAL_RESULTS.json + screenshot,post-handoff physical anchor
+fpga,semantic controller,2 LUT / 2 FF,PG2K400_PHYSICAL_RESULTS.json + screenshot,post-handoff physical anchor
+fpga,timing,Fmax 307.4085 MHz; slack +16.747 ns @ 50 MHz,PG2K400_PHYSICAL_RESULTS.json + screenshot,post-handoff physical anchor

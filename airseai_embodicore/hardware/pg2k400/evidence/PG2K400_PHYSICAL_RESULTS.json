@@ -1,0 +1,60 @@
+{
+  "record_type": "post_handoff_physical_anchor_result",
+  "device": "PG2K400-6IFFBG676",
+  "scope": "physical realizability of the semantic-control / condition-ingress anchor only",
+  "resource_utilization": {
+    "embodicore_pg_selftest_top": {
+      "LUT": 294,
+      "FF": 252,
+      "Distributed_RAM": 0,
+      "APM": 0,
+      "DRM": 0
+    },
+    "embodicore_condition_ingress": {
+      "LUT": 173,
+      "FF": 162,
+      "Distributed_RAM": 0,
+      "APM": 0,
+      "DRM": 0
+    },
+    "embodicore_semantic_controller": {
+      "LUT": 2,
+      "FF": 2,
+      "Distributed_RAM": 0,
+      "APM": 0,
+      "DRM": 0
+    }
+  },
+  "timing": {
+    "clock": "clk_50m",
+    "requested_frequency_MHz": 50.0,
+    "Fmax_MHz": 307.4085,
+    "slack_ns": 16.747
+  },
+  "evidence": {
+    "resource_screenshot": {
+      "path": "pg2k400_resource_utilization.png",
+      "sha256": "d6cfcfb784521b3dfef41531a2af920fa6f51e46ff308daa8784ec8e31c86b0d",
+      "provenance": "user-supplied screenshot of PG2K400 vendor resource report"
+    },
+    "timing_screenshot": {
+      "path": "pg2k400_timing_summary.png",
+      "sha256": "92fbf07e9d899b4748e1f6ef21321595debaec6bf68c53ec10f634bb2a97100f",
+      "provenance": "user-supplied screenshot of PG2K400 vendor timing report"
+    }
+  },
+  "claim_boundaries": {
+    "supports": [
+      "physical mapping of the semantic-control / ingress anchor",
+      "resource counts shown in the included vendor resource screenshot",
+      "timing closure evidence shown in the included vendor timing screenshot"
+    ],
+    "does_not_support": [
+      "full-policy FPGA speedup",
+      "full 12-mixer arithmetic accelerator area",
+      "board-level policy-action numerical correctness",
+      "cross-device performance portability"
+    ]
+  },
+  "historical_note": "The pre-handoff PART4_MAC_FINAL.json intentionally records PG2K400_anchor_complete=false. This post-handoff record is additive; the historical frozen file is not modified."
+}

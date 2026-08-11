@@ -1,0 +1,75 @@
+{
+  "experiment": 4,
+  "name": "portable_rtl_condition_ingress_cycles",
+  "status": "PASS",
+  "scope": {
+    "measured": "condition-cache external-memory ingress only",
+    "not_measured": "full mixer/accelerator latency",
+    "reason": "isolates semantic reuse before introducing datapath scheduling assumptions"
+  },
+  "execution_geometry": {
+    "policy_invocations": 900,
+    "denoise_calls_per_policy": 10,
+    "condition_elements": 256,
+    "condition_element_bits": 16,
+    "condition_vector_bytes": 512
+  },
+  "generic_memory_interfaces_bits": [
+    64,
+    128,
+    256,
+    512
+  ],
+  "comparisons": {
+    "64": {
+      "matched_cycles": 576000,
+      "embodicore_cycles": 57600,
+      "agnostic_cycles": 64,
+      "legal_traffic_reduction_percent": 90.0,
+      "legal_ingress_cycle_reduction_percent": 90.0,
+      "matched_over_embodicore_cycle_ratio": 10.0,
+      "agnostic_is_semantically_legal": false
+    },
+    "128": {
+      "matched_cycles": 288000,
+      "embodicore_cycles": 28800,
+      "agnostic_cycles": 32,
+      "legal_traffic_reduction_percent": 90.0,
+      "legal_ingress_cycle_reduction_percent": 90.0,
+      "matched_over_embodicore_cycle_ratio": 10.0,
+      "agnostic_is_semantically_legal": false
+    },
+    "256": {
+      "matched_cycles": 144000,
+      "embodicore_cycles": 14400,
+      "agnostic_cycles": 16,
+      "legal_traffic_reduction_percent": 90.0,
+      "legal_ingress_cycle_reduction_percent": 90.0,
+      "matched_over_embodicore_cycle_ratio": 10.0,
+      "agnostic_is_semantically_legal": false
+    },
+    "512": {
+      "matched_cycles": 72000,
+      "embodicore_cycles": 7200,
+      "agnostic_cycles": 8,
+      "legal_traffic_reduction_percent": 90.0,
+      "legal_ingress_cycle_reduction_percent": 90.0,
+      "matched_over_embodicore_cycle_ratio": 10.0,
+      "agnostic_is_semantically_legal": false
+    }
+  },
+  "rtl": {
+    "module": "part4/rtl/embodicore_condition_ingress.sv",
+    "module_sha256": "3162e92e6c9aa20a44be950c9f8358211b20c30c7e9e5428b09360c0a7588bc3",
+    "testbench": "part4/tb/tb_condition_ingress.sv",
+    "testbench_sha256": "fe2619a0d982d20de624a9d3ff36fb26608e7a42d7d10059e54331bb0c98eeef"
+  },
+  "cross_experiment_checks": {
+    "matches_experiment2_traffic": true,
+    "matches_experiment3_load_counts": true
+  },
+  "guardrail": {
+    "Agnostic-4087": "reported only as an illegal upper-bound / negative-control behavior",
+    "cycle_claim": "cycles are exact RTL serialized condition-ingress cycles for the stated bus width; they are not claimed as total policy latency"
+  }
+}

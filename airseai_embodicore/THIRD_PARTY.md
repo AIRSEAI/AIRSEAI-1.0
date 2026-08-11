@@ -1,10 +1,12 @@
-# Third-party software
+# Third-party software and external inputs
 
-The curated `airseai_embodicore` subtree intentionally does not vendor Python
-virtual environments or large third-party repositories.
+The public EmbodiCore subtree does not vendor the full Mamba Policy repository,
+Mamba/mamba-ssm repository, checkpoints, datasets, or Python virtual
+environments.
 
-The research workflow used upstream Mamba/Mamba-Policy software. Users should
-obtain those dependencies separately and comply with their licenses.
+The V7 builder records locally recoverable Git commits and SHA-256 identifiers
+in `PROVENANCE.json` and `release_assets/OMITTED_DATA_SHA256.txt`.
 
-Checkpoints, raw traces, datasets, and extracted weights are not automatically
-redistributed.
+Users must obtain upstream dependencies separately and comply with their
+licenses. The parent AIRSEAI repository license governs this subtree unless
+otherwise stated.

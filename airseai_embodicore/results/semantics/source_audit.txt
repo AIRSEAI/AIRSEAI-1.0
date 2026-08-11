@@ -1,0 +1,502 @@
+=== EmbodiCore Part I Source Audit ===
+Timestamp: 2026-08-07T13:30:32.640298
+Mamba-Policy commit: 4dc5b4f440090438d17ef30d460988381ef9913d
+state-spaces/mamba commit: e9594ce1c732d97440f0332fdc43170a2294dbfa
+
+=== Boolean source checks ===
+ddim_loop_exists: True
+global_cond_passed_to_model: True
+trajectory_updated_by_scheduler: True
+global_cond_formed_from_observation: True
+mamba_mixer_called_without_explicit_inference_params: True
+official_mamba_checks_inference_params: True
+film_config_present: True
+condition_concat_present: True
+SOURCE_AUDIT_PASS: True
+
+=== A. DDIM loop ===
+  174:             size=condition_data.shape, 
+  175:             dtype=condition_data.dtype,
+  176:             device=condition_data.device)
+  177: 
+  178:         # set step values
+  179:         scheduler.set_timesteps(self.num_inference_steps)
+  180: 
+  181: 
+  182:         for t in scheduler.timesteps:
+  183:             # 1. apply conditioning
+  184:             trajectory[condition_mask] = condition_data[condition_mask]
+  185: 
+  186: 
+  187:             model_output = model(sample=trajectory,
+  188:                                 timestep=t, 
+  189:                                 local_cond=local_cond, global_cond=global_cond)
+  190:             
+  191:             # 3. compute previous image: x_t -> x_t-1
+  192:             trajectory = scheduler.step(
+  193:                 model_output, t, trajectory, ).prev_sample
+  194:             
+  195:                 
+  196:         # finally make sure conditioning is enforced
+  197:         trajectory[condition_mask] = condition_data[condition_mask]   
+  198: 
+  199: 
+  200:         return trajectory
+
+=== B. global_cond construction/use ===
+   26:             noise_scheduler: DDPMScheduler,
+   27:             horizon, 
+   28:             n_action_steps, 
+   29:             n_obs_steps,
+   30:             num_inference_steps=None,
+   31:             obs_as_global_cond=True,
+   32:             diffusion_step_embed_dim=256,
+   33:             down_dims=(256,512,1024),
+   34:             kernel_size=5,
+   35:             n_groups=8,
+   36:             condition_type="film",
+   37:             use_down_condition=True,
+   38:             use_mid_condition=True,
+   39:             use_up_condition=True,
+
+   75:                                                 )
+   76: 
+   77:         # create diffusion model
+   78:         obs_feature_dim = obs_encoder.output_shape()
+   79:         input_dim = action_dim + obs_feature_dim
+   80:         global_cond_dim = None
+   81:         if obs_as_global_cond:
+   82:             input_dim = action_dim
+   83:             if "cross_attention" in self.condition_type:
+   84:                 global_cond_dim = obs_feature_dim
+   85:             else:
+   86:                 global_cond_dim = obs_feature_dim * n_obs_steps
+   87:         
+   88: 
+
+   76: 
+   77:         # create diffusion model
+   78:         obs_feature_dim = obs_encoder.output_shape()
+   79:         input_dim = action_dim + obs_feature_dim
+   80:         global_cond_dim = None
+   81:         if obs_as_global_cond:
+   82:             input_dim = action_dim
+   83:             if "cross_attention" in self.condition_type:
+   84:                 global_cond_dim = obs_feature_dim
+   85:             else:
+   86:                 global_cond_dim = obs_feature_dim * n_obs_steps
+   87:         
+   88: 
+   89:         self.use_pc_color = use_pc_color
+
+   79:         input_dim = action_dim + obs_feature_dim
+   80:         global_cond_dim = None
+   81:         if obs_as_global_cond:
+   82:             input_dim = action_dim
+   83:             if "cross_attention" in self.condition_type:
+   84:                 global_cond_dim = obs_feature_dim
+   85:             else:
+   86:                 global_cond_dim = obs_feature_dim * n_obs_steps
+   87:         
+   88: 
+   89:         self.use_pc_color = use_pc_color
+   90:         self.pointnet_type = pointnet_type
+   91:         cprint(f"[DiffusionUnetHybridPointcloudPolicy] use_pc_color: {self.use_pc_color}", "yellow")
+   92:         cprint(f"[DiffusionUnetHybridPointcloudPolicy] pointnet_type: {self.pointnet_type}", "yellow")
+
+   81:         if obs_as_global_cond:
+   82:             input_dim = action_dim
+   83:             if "cross_attention" in self.condition_type:
+   84:                 global_cond_dim = obs_feature_dim
+   85:             else:
+   86:                 global_cond_dim = obs_feature_dim * n_obs_steps
+   87:         
+   88: 
+   89:         self.use_pc_color = use_pc_color
+   90:         self.pointnet_type = pointnet_type
+   91:         cprint(f"[DiffusionUnetHybridPointcloudPolicy] use_pc_color: {self.use_pc_color}", "yellow")
+   92:         cprint(f"[DiffusionUnetHybridPointcloudPolicy] pointnet_type: {self.pointnet_type}", "yellow")
+   93: 
+   94: 
+
+   99: 
+  100:         if use_mamba:
+  101:             model = ConditionalMambaUnet1D(
+  102:                 input_dim=input_dim,
+  103:                 local_cond_dim=None,
+  104:                 global_cond_dim=global_cond_dim,
+  105:                 diffusion_step_embed_dim=diffusion_step_embed_dim,
+  106:                 down_dims=down_dims,
+  107:                 kernel_size=kernel_size,
+  108:                 n_groups=n_groups,
+  109:                 condition_type=condition_type,
+  110:                 use_down_condition=use_down_condition,
+  111:                 use_mid_condition=use_mid_condition,
+  112:                 use_up_condition=use_up_condition,
+
+  114:             )
+  115:         else:
+  116:             model = ConditionalUnet1D(
+  117:                 input_dim=input_dim,
+  118:                 local_cond_dim=None,
+  119:                 global_cond_dim=global_cond_dim,
+  120:                 diffusion_step_embed_dim=diffusion_step_embed_dim,
+  121:                 down_dims=down_dims,
+  122:                 kernel_size=kernel_size,
+  123:                 n_groups=n_groups,
+  124:                 condition_type=condition_type,
+  125:                 use_down_condition=use_down_condition,
+  126:                 use_mid_condition=use_mid_condition,
+  127:                 use_up_condition=use_up_condition,
+
+  133:         
+  134:         
+  135:         self.noise_scheduler_pc = copy.deepcopy(noise_scheduler)
+  136:         self.mask_generator = LowdimMaskGenerator(
+  137:             action_dim=action_dim,
+  138:             obs_dim=0 if obs_as_global_cond else obs_feature_dim,
+  139:             max_n_obs_steps=n_obs_steps,
+  140:             fix_obs_steps=True,
+  141:             action_visible=False
+  142:         )
+  143:         
+  144:         self.normalizer = LinearNormalizer()
+  145:         self.horizon = horizon
+  146:         self.obs_feature_dim = obs_feature_dim
+
+  145:         self.horizon = horizon
+  146:         self.obs_feature_dim = obs_feature_dim
+  147:         self.action_dim = action_dim
+  148:         self.n_action_steps = n_action_steps
+  149:         self.n_obs_steps = n_obs_steps
+  150:         self.obs_as_global_cond = obs_as_global_cond
+  151:         self.kwargs = kwargs
+  152: 
+  153:         if num_inference_steps is None:
+  154:             num_inference_steps = noise_scheduler.config.num_train_timesteps
+  155:         self.num_inference_steps = num_inference_steps
+  156: 
+  157: 
+  158:         print_params(self)
+
+  159:         
+  160:     # ========= inference  ============
+  161:     def conditional_sample(self, 
+  162:             condition_data, condition_mask,
+  163:             condition_data_pc=None, condition_mask_pc=None,
+  164:             local_cond=None, global_cond=None,
+  165:             generator=None,
+  166:             # keyword arguments to scheduler.step
+  167:             **kwargs
+  168:             ):
+  169:         model = self.model
+  170:         scheduler = self.noise_scheduler
+  171: 
+  172: 
+
+  184:             trajectory[condition_mask] = condition_data[condition_mask]
+  185: 
+  186: 
+  187:             model_output = model(sample=trajectory,
+  188:                                 timestep=t, 
+  189:                                 local_cond=local_cond, global_cond=global_cond)
+  190:             
+  191:             # 3. compute previous image: x_t -> x_t-1
+  192:             trajectory = scheduler.step(
+  193:                 model_output, t, trajectory, ).prev_sample
+  194:             
+  195:                 
+  196:         # finally make sure conditioning is enforced
+  197:         trajectory[condition_mask] = condition_data[condition_mask]   
+
+  227:         device = self.device
+  228:         dtype = self.dtype
+  229: 
+  230:         # handle different ways of passing observation
+  231:         local_cond = None
+  232:         global_cond = None
+  233:         if self.obs_as_global_cond:
+  234:             # condition through global feature
+  235:             this_nobs = dict_apply(nobs, lambda x: x[:,:To,...].reshape(-1,*x.shape[2:]))
+  236:             nobs_features, recons_loss  = self.obs_encoder(this_nobs)
+  237:             if "cross_attention" in self.condition_type:
+  238:                 # treat as a sequence
+  239:                 global_cond = nobs_features.reshape(B, self.n_obs_steps, -1)
+  240:             else:
+
+  228:         dtype = self.dtype
+  229: 
+  230:         # handle different ways of passing observation
+  231:         local_cond = None
+  232:         global_cond = None
+  233:         if self.obs_as_global_cond:
+  234:             # condition through global feature
+  235:             this_nobs = dict_apply(nobs, lambda x: x[:,:To,...].reshape(-1,*x.shape[2:]))
+  236:             nobs_features, recons_loss  = self.obs_encoder(this_nobs)
+  237:             if "cross_attention" in self.condition_type:
+  238:                 # treat as a sequence
+  239:                 global_cond = nobs_features.reshape(B, self.n_obs_steps, -1)
+  240:             else:
+  241:                 # reshape back to B, Do
+
+  234:             # condition through global feature
+  235:             this_nobs = dict_apply(nobs, lambda x: x[:,:To,...].reshape(-1,*x.shape[2:]))
+  236:             nobs_features, recons_loss  = self.obs_encoder(this_nobs)
+  237:             if "cross_attention" in self.condition_type:
+  238:                 # treat as a sequence
+  239:                 global_cond = nobs_features.reshape(B, self.n_obs_steps, -1)
+  240:             else:
+  241:                 # reshape back to B, Do
+  242:                 global_cond = nobs_features.reshape(B, -1)
+  243:             # empty data for action
+  244:             cond_data = torch.zeros(size=(B, T, Da), device=device, dtype=dtype)
+  245:             cond_mask = torch.zeros_like(cond_data, dtype=torch.bool)
+  246:         else:
+  247:             # condition through impainting
+
+  237:             if "cross_attention" in self.condition_type:
+  238:                 # treat as a sequence
+  239:                 global_cond = nobs_features.reshape(B, self.n_obs_steps, -1)
+  240:             else:
+  241:                 # reshape back to B, Do
+  242:                 global_cond = nobs_features.reshape(B, -1)
+  243:             # empty data for action
+  244:             cond_data = torch.zeros(size=(B, T, Da), device=device, dtype=dtype)
+  245:             cond_mask = torch.zeros_like(cond_data, dtype=torch.bool)
+  246:         else:
+  247:             # condition through impainting
+  248:             this_nobs = dict_apply(nobs, lambda x: x[:,:To,...].reshape(-1,*x.shape[2:]))
+  249:             nobs_features = self.obs_encoder(this_nobs)
+  250:             # reshape back to B, T, Do
+
+  257:         # run sampling
+  258:         nsample = self.conditional_sample(
+  259:             cond_data, 
+  260:             cond_mask,
+  261:             local_cond=local_cond,
+  262:             global_cond=global_cond,
+  263:             **self.kwargs)
+  264:         
+  265:         # unnormalize prediction
+  266:         naction_pred = nsample[...,:Da]
+  267:         action_pred = self.normalizer['action'].unnormalize(naction_pred)
+  268: 
+  269:         # get action
+  270:         start = To - 1
+
+  298:         batch_size = nactions.shape[0]
+  299:         horizon = nactions.shape[1]
+  300: 
+  301:         # handle different ways of passing observation
+  302:         local_cond = None
+  303:         global_cond = None
+  304:         trajectory = nactions
+  305:         cond_data = trajectory
+  306:         
+  307:         
+  308:         if self.obs_as_global_cond:
+  309:             # reshape B, T, ... to B*T
+  310:             this_nobs = dict_apply(nobs, 
+  311:                 lambda x: x[:,:self.n_obs_steps,...].reshape(-1,*x.shape[2:]))
+
+  303:         global_cond = None
+  304:         trajectory = nactions
+  305:         cond_data = trajectory
+  306:         
+  307:         
+  308:         if self.obs_as_global_cond:
+  309:             # reshape B, T, ... to B*T
+  310:             this_nobs = dict_apply(nobs, 
+  311:                 lambda x: x[:,:self.n_obs_steps,...].reshape(-1,*x.shape[2:]))
+  312:             nobs_features, recons_loss = self.obs_encoder(this_nobs)
+  313: 
+  314: 
+  315:             if "cross_attention" in self.condition_type:
+  316:                 # treat as a sequence
+
+  312:             nobs_features, recons_loss = self.obs_encoder(this_nobs)
+  313: 
+  314: 
+  315:             if "cross_attention" in self.condition_type:
+  316:                 # treat as a sequence
+  317:                 global_cond = nobs_features.reshape(batch_size, self.n_obs_steps, -1)
+  318:             else:
+  319:                 # reshape back to B, Do
+  320:                 global_cond = nobs_features.reshape(batch_size, -1)
+  321:                 
+  322: 
+  323:             # this_n_point_cloud = this_nobs['imagin_robot'].reshape(batch_size,-1, *this_nobs['imagin_robot'].shape[1:])
+  324:             this_n_point_cloud = this_nobs['point_cloud'].reshape(batch_size,-1, *this_nobs['point_cloud'].shape[1:])
+  325:             this_n_point_cloud = this_n_point_cloud[..., :3]
+
+  315:             if "cross_attention" in self.condition_type:
+  316:                 # treat as a sequence
+  317:                 global_cond = nobs_features.reshape(batch_size, self.n_obs_steps, -1)
+  318:             else:
+  319:                 # reshape back to B, Do
+  320:                 global_cond = nobs_features.reshape(batch_size, -1)
+  321:                 
+  322: 
+  323:             # this_n_point_cloud = this_nobs['imagin_robot'].reshape(batch_size,-1, *this_nobs['imagin_robot'].shape[1:])
+  324:             this_n_point_cloud = this_nobs['point_cloud'].reshape(batch_size,-1, *this_nobs['point_cloud'].shape[1:])
+  325:             this_n_point_cloud = this_n_point_cloud[..., :3]
+  326:         else:
+  327:             # reshape B, T, ... to B*T
+  328:             this_nobs = dict_apply(nobs, lambda x: x.reshape(-1, *x.shape[2:]))
+
+  363:         # Predict the noise residual
+  364:         
+  365:         pred = self.model(sample=noisy_trajectory, 
+  366:                         timestep=timesteps, 
+  367:                             local_cond=local_cond, 
+  368:                             global_cond=global_cond)
+  369: 
+  370: 
+  371:         pred_type = self.noise_scheduler.config.prediction_type 
+  372:         if pred_type == 'epsilon':
+  373:             target = noise
+  374:         elif pred_type == 'sample':
+  375:             target = trajectory
+  376:         elif pred_type == 'v_prediction':
+
+=== C. MambaVisionBlock mixer call ===
+  157:         self.gamma_1 = nn.Parameter(layer_scale * torch.ones(dim))  if use_layer_scale else 1
+  158:         self.gamma_2 = nn.Parameter(layer_scale * torch.ones(dim))  if use_layer_scale else 1
+  159: 
+  160:     def forward(self, x):
+  161:         '''
+  162:         x : [ batch_size x in_channels x horizon ]
+  163:         '''
+  164:         x = x.permute(0, 2, 1)
+  165:         x = x + self.drop_path(self.gamma_1 * self.mixer(self.norm1(x)))
+  166:         x = x + self.drop_path(self.gamma_2 * self.mlp(self.norm2(x)))
+  167:         x = x.permute(0, 2, 1)
+  168: 
+  169:         return x
+  170: 
+  171: class AttnVisionBlock(nn.Module):
+  172:     def __init__(self, 
+  173:                  dim, 
+  174:                  num_heads=8,
+  175:                  qkv_bias=False, 
+
+  203:         self.gamma_1 = nn.Parameter(layer_scale * torch.ones(dim))  if use_layer_scale else 1
+  204:         self.gamma_2 = nn.Parameter(layer_scale * torch.ones(dim))  if use_layer_scale else 1
+  205: 
+  206:     def forward(self, x):
+  207:         '''
+  208:         x : [ batch_size x in_channels x horizon ]
+  209:         '''
+  210:         x = x.permute(0, 2, 1)
+  211:         x = x + self.drop_path(self.gamma_1 * self.mixer(self.norm1(x)))
+  212:         x = x + self.drop_path(self.gamma_2 * self.mlp(self.norm2(x)))
+  213:         x = x.permute(0, 2, 1)
+  214: 
+  215:         return x
+  216: 
+  217: class ConditionalResidualBlock1D(nn.Module):
+  218: 
+  219:     def __init__(self,
+  220:                  in_channels,
+  221:                  out_channels,
+
+=== D. Official Mamba inference_params/cache path ===
+  119:     def forward(self, hidden_states, inference_params=None):
+  120:         """
+  121:         hidden_states: (B, L, D)
+  122:         Returns: same shape as hidden_states
+  123:         """
+  124:         batch, seqlen, dim = hidden_states.shape
+  125: 
+  126:         conv_state, ssm_state = None, None
+  127:         if inference_params is not None:
+  128:             conv_state, ssm_state = self._get_states_from_cache(inference_params, batch)
+  129:             if inference_params.seqlen_offset > 0:
+  130:                 # The states are updated inplace
+  131:                 out, _, _ = self.step(hidden_states, conv_state, ssm_state)
+  132:                 return out
+  133: 
+  134:         # We do matmul and transpose BLH -> HBL at the same time
+  135:         xz = rearrange(
+  136:             self.in_proj.weight @ rearrange(hidden_states, "b l d -> d (b l)"),
+  137:             "d (b l) -> b d l",
+  138:             l=seqlen,
+  139:         )
+  140:         if self.in_proj.bias is not None:
+  141:             xz = xz + rearrange(self.in_proj.bias.to(dtype=xz.dtype), "d -> d 1")
+  142: 
+  143:         A = -torch.exp(self.A_log.float())  # (d_inner, d_state)
+  144:         # In the backward pass we write dx and dz next to each other to avoid torch.cat
+  145:         if self.use_fast_path and causal_conv1d_fn is not None and inference_params is None:  # Doesn't support outputting the states
+  146:             out = mamba_inner_fn(
+  147:                 xz,
+  148:                 self.conv1d.weight,
+  149:                 self.conv1d.bias,
+
+=== E. Condition construction ===
+  594:             timesteps = timesteps[None].to(sample.device)
+  595:         # broadcast to batch dimension in a way that's compatible with ONNX/Core ML
+  596:         timesteps = timesteps.expand(sample.shape[0])
+  597: 
+  598:         timestep_embed = self.diffusion_step_encoder(timesteps)
+  599:         if global_cond is not None:
+  600:             if self.condition_type == 'cross_attention':
+  601:                 timestep_embed = timestep_embed.unsqueeze(1).expand(-1, global_cond.shape[1], -1)
+  602:             global_feature = torch.cat([timestep_embed, global_cond], axis=-1)
+  603: 
+  604: 
+  605:         # encode local features
+  606:         h_local = list()
+  607:         if local_cond is not None:
+  608:             local_cond = einops.rearrange(local_cond, 'b h t -> b t h')
+  609:             resnet, resnet2 = self.local_cond_encoder
+  610:             x = resnet(local_cond, global_feature)
+  611:             h_local.append(x)
+  612:             x = resnet2(local_cond, global_feature)
+  613:             h_local.append(x)
+  614:         
+  615:         x = sample
+  616:         h = []
+  617: 
+
+  792:         # broadcast to batch dimension in a way that's compatible with ONNX/Core ML
+  793:         timesteps = timesteps.expand(sample.shape[0])
+  794: 
+  795:         timestep_embed = self.diffusion_step_encoder(timesteps)  ## [B,time_dim]
+  796:         if global_cond is not None:
+  797:             if self.condition_type == 'cross_attention':
+  798:                 timestep_embed = timestep_embed.unsqueeze(1).expand(-1, global_cond.shape[1], -1)
+  799:             
+  800:             global_feature = torch.cat([timestep_embed, global_cond], axis=-1)
+  801: 
+  802:         
+  803:         # encode local features
+  804:         h_local = list()
+  805:         if local_cond is not None:
+  806:             local_cond = einops.rearrange(local_cond, 'b h t -> b t h')
+  807:             resnet, resnet2 = self.local_cond_encoder
+  808:             x = resnet(local_cond, global_feature)
+  809:             h_local.append(x)
+  810:             x = resnet2(local_cond, global_feature)
+  811:             h_local.append(x)
+  812:         
+  813:         x = sample
+  814:         h = []
+  815: 
+
+=== F. FiLM configuration ===
+   17: 
+   18: policy:
+   19:   _target_: diffusion_policy_3d.policy.dp3.DP3
+   20:   use_point_crop: true
+   21:   condition_type: film
+   22:   use_down_condition: true
+   23:   use_mid_condition: true
+   24:   use_up_condition: true
+   25:   use_mamba: true
+
+=== Interpretation frozen for Part I ===
+1) global_cond is policy-local while observation is fixed.
+2) trajectory and timestep evolve across DDIM iterations.
+3) selective-scan state is scan-local in this policy context.
+4) cross-call reuse must respect reset and dependency semantics.

@@ -1,0 +1,114 @@
+{
+  "record_type": "frozen_claim_record",
+  "stage": "Part III / Part III.5",
+  "provenance_status": "derived_from_previously_frozen_PartIII5_result_writeup; not a substitute for the original raw 4096-row candidate table or raw replay arrays",
+  "structural_dse": {
+    "all_candidates": 4096,
+    "resource_feasible_primary_budget_0_80": 3664,
+    "legal_and_resource_feasible": 687,
+    "semantic_elimination_fraction_of_resource_feasible": 0.8125,
+    "primary_budget": 0.8,
+    "sensitivity_budgets": [
+      0.65,
+      0.7,
+      0.75,
+      0.8
+    ],
+    "objectives": {
+      "latency_heavy": [
+        0.85,
+        0.15
+      ],
+      "balanced": [
+        0.5,
+        0.5
+      ],
+      "traffic_heavy": [
+        0.2,
+        0.8
+      ]
+    },
+    "agnostic_top20_illegal_each_objective": true,
+    "fp32_only_agnostic_top20_illegal": true,
+    "best_legal_candidate": 759,
+    "balanced_agnostic_winner": 4087,
+    "candidate_759": {
+      "scan_lifetime": "scan",
+      "condition_lifetime": "policy",
+      "state_placement": "on-chip",
+      "condition_placement": "on-chip",
+      "parallelism": 8,
+      "banking": 2,
+      "fusion": true,
+      "structural_arithmetic_bits": 16
+    },
+    "candidate_4087": {
+      "scan_lifetime": "episode",
+      "condition_lifetime": "episode",
+      "state_placement": "on-chip",
+      "condition_placement": "on-chip",
+      "parallelism": 8,
+      "banking": 2,
+      "fusion": true,
+      "structural_arithmetic_bits": 16
+    },
+    "enumeration_and_ranking_seconds": 0.068
+  },
+  "semantic_negative_controls": {
+    "legal_policy_local_cache_max_abs_output_error": 1.27e-07,
+    "illegal_scan_carry_output_error": 0.00286,
+    "illegal_scan_carry_final_state_error": 0.0169,
+    "stale_condition_source_level_output_error": 1.39,
+    "real_policy_instrumentation_invocations": 900,
+    "real_policy_instrumentation_action_error": "zero",
+    "within_episode_pairs": 96,
+    "stale_condition_within_episode_mean_action_L2": 0.329,
+    "within_episode_pairs_over_1e_2_max_abs_fraction": 0.594,
+    "sampled_reset_boundaries": 4,
+    "stale_condition_reset_mean_action_L2": 10.61
+  },
+  "fidelity": {
+    "representative_real_weight_mixer_calls": 1920,
+    "dynamic_microtrace_mixers": [
+      0,
+      6,
+      11
+    ],
+    "explicit_scan_fp32": {
+      "max_abs_error": 3.81e-06,
+      "mean_L2_error": 1.51e-06,
+      "p99_L2_error": 1.3e-05
+    },
+    "P1": {
+      "weights": "FP16",
+      "activations": "FP16",
+      "scan_state": "FP32",
+      "accumulation": "FP32",
+      "mixer_mean_L2": 0.00884,
+      "mixer_p99_L2": 0.0977
+    },
+    "P2": {
+      "scan_state": "FP16",
+      "accumulation": "FP32",
+      "mixer_mean_L2": 0.00891
+    },
+    "P3": {
+      "all": "FP16",
+      "mixer_mean_L2": 0.00966,
+      "mixer_p99_L2": 0.111
+    },
+    "selected": "P1",
+    "policy_invocations": 900,
+    "executed_action_metric": "per-invocation L2 over the recorded executed-action tensor",
+    "executed_action_tensor_shape_per_invocation": [
+      3,
+      24
+    ],
+    "P1_action_mean_L2": 0.000411,
+    "P1_action_p99_L2": 0.000886,
+    "P1_action_max_L2": 0.00129,
+    "epsilon_a": 0.1,
+    "passes": 900
+  },
+  "archive_gap": "If the original candidates_all.csv / legal_candidates.csv / PART3_STAGE3_5_COMPLETE.json are found locally, V7 copies them as raw archival evidence. If not, this record remains an explicit frozen claim index only."
+}
