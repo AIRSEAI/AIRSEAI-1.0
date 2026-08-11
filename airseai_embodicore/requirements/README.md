@@ -1,11 +1,9 @@
-# Requirements
+# Environment notes
 
-Minimal sample:
-- Python 3.9+
+The self-contained release verifier uses Python 3 plus standard Unix tools.
+Icarus Verilog is optional for compiling/running the included FPGA self-test.
 
-Optional:
-- Icarus Verilog for RTL simulation
-- Yosys + ABC for generic synthesis
-
-Full real-policy tracing/fidelity may require upstream model software and
-checkpoint assets not redistributed here.
+Full real-policy tracing/fidelity reruns require upstream model software,
+checkpoint/data inputs, and the historical experiment environments. Environment
+snapshots in this directory are informative, not a guarantee that every listed
+package is needed by each layer.

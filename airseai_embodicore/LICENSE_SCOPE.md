@@ -1,0 +1,1 @@
+Parent repository LICENSE applies.

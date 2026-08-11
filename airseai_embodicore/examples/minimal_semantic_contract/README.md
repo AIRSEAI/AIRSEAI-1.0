@@ -1,24 +1,13 @@
 # Minimal semantic-contract example
 
-This example demonstrates the central EmbodiCore idea without requiring a
-model checkpoint, robot simulator, GPU, or FPGA.
-
 Run:
 
 ```bash
-bash scripts/run_sample.sh
+python3 sample.py
 ```
 
-The example defines:
-
-- `scan_state` with maximum legal lifetime `scan`;
-- a condition with maximum legal lifetime `policy`.
-
-It then checks three simplified design points:
-
-- `Matched-NoReuse`: legal;
-- `EmbodiCore-759`: legal;
-- `Agnostic-4087`: illegal because it extends both lifetimes to `episode`.
-
-The example is intentionally small. It teaches the semantic-legality interface;
-it is not a performance benchmark.
+It checks the legality distinction used by the paper: scan state is scan-local,
+the observation condition may be reused through the policy lifetime, and
+episode-level persistence of both is illegal in the Mamba Policy instance.
+This example illustrates the semantic interface; it is not the historical
+Part-III performance cost model.

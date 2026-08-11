@@ -1,6 +1,6 @@
 cff-version: 1.2.0
-message: "If you use AIRSEAI EmbodiCore, please cite the associated paper and this software artifact."
-title: "AIRSEAI EmbodiCore"
+message: "If you use EmbodiCore, please cite the associated paper and this AIRSEAI artifact."
+title: "EmbodiCore: Semantics-Aware Hardware Compilation for Stateful Embodied AI"
 type: software
 authors:
   - family-names: Liu
@@ -9,5 +9,6 @@ repository-code: "https://github.com/AIRSEAI/AIRSEAI-1.0"
 keywords:
   - embodied AI
   - hardware compilation
+  - execution semantics
   - stateful AI
-  - semantics
+  - FPGA

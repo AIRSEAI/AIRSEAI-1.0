@@ -1,0 +1,8 @@
+RESULT condition_loads=900
+RESULT scan_resets=9000
+RESULT ingress_loads=900
+RESULT ingress_beats=28800
+RESULT ingress_stall_cycles=28800
+RESULT pass_led=1
+SELFTEST: PASS
+artifacts/pg2k400_standalone/AIRSEAI-EmbodiCore-PG2K400/tb/tb_pg_selftest.sv:84: $finish called at 972311000 (1ps)

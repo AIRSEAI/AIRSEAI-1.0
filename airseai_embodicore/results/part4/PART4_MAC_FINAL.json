@@ -1,0 +1,113 @@
+{
+  "experiment": 9,
+  "name": "part4_mac_final_evidence_freeze",
+  "status": "PASS",
+  "designs": {
+    "Matched-NoReuse": {
+      "legal": true,
+      "condition_lifetime": "denoise",
+      "scan_lifetime": "scan"
+    },
+    "EmbodiCore-759": {
+      "legal": true,
+      "condition_lifetime": "policy",
+      "scan_lifetime": "scan"
+    },
+    "Agnostic-4087": {
+      "legal": false,
+      "condition_lifetime": "episode",
+      "scan_lifetime": "episode"
+    }
+  },
+  "headline": {
+    "condition_traffic_reduction_percent": 90.0,
+    "condition_traffic_ratio": 10.0,
+    "embodicore_scan_resets": 9000,
+    "agnostic_stale_condition_uses": 8990,
+    "agnostic_illegal_scan_carries": 8999,
+    "representative_cycle_reduction_reference_percent": 0.005990016638934836,
+    "representative_cycle_reduction_range_percent": [
+      0.001374612435656175,
+      0.01209514850154525
+    ],
+    "generic_semantic_controller_LUT_overhead": 1,
+    "generic_semantic_controller_FF_overhead": 0
+  },
+  "coverage": {
+    "real_weight_mixers": "12/12",
+    "real_dynamic_microtrace_mixers": [
+      0,
+      6,
+      11
+    ],
+    "full_12_mixer_cycle_claim": false,
+    "PG2K400_anchor_complete": false
+  },
+  "safe_claims": [
+    "900/900 recorded policy invocations have unique global conditions.",
+    "Policy-local condition reuse reduces trace-visible condition ingress from 4,608,000 B to 460,800 B over the frozen 900-policy workload.",
+    "This is a 90% reduction, or a 10x condition-ingress ratio.",
+    "The same 90% / 10x relation holds for generic 64-, 128-, 256-, and 512-bit serialized memory interfaces.",
+    "EmbodiCore-759 resets scan state on all 9,000 independent scan calls.",
+    "Under the explicit no-reset RTL stress test, Agnostic-4087 produces 8,990 stale-condition uses and 8,999 illegal scan carries.",
+    "The real-weight archive contains 108 arrays across all 12 mixers.",
+    "Dynamic workload measurements are available only for mixers 0, 6, and 11.",
+    "No additional strong policy-local intermediate was observed among the nine available real microtrace arrays.",
+    "At the frozen 128-bit / scan-rate-8 reference point, legal condition reuse reduces representative-kernel serialized cycles by about 0.005990%.",
+    "Across the frozen sensitivity sweep, the representative cycle effect ranges from 0.001375% to 0.012095%.",
+    "Relative to Matched-NoReuse, the verified EmbodiCore semantic controller adds one generic LUT and zero FFs under both 4-LUT and 6-LUT Yosys/ABC mappings."
+  ],
+  "unsafe_claims": [
+    "90% whole-accelerator latency reduction",
+    "10x whole-policy speedup",
+    "full 12-mixer measured cycle speedup",
+    "full-accelerator area from the generic controller synthesis",
+    "PG2K400 LUT/FF utilization before PG implementation",
+    "device-measured latency before PG implementation",
+    "additional large policy-local intermediate reuse not observed in traces",
+    "Agnostic-4087 stress-test counts as empirical dataset episode statistics"
+  ],
+  "evidence_manifest": {
+    "exp1": {
+      "path": "artifacts/part4_mac/PART4_MAC_INPUT_FREEZE.json",
+      "sha256": "2e729580dd57c37251d20de9e102483c4f17942a131a5aae9cbb93ff4db79dda"
+    },
+    "exp2": {
+      "path": "artifacts/part4_mac/EXPERIMENT2_SEMANTIC_TRAFFIC.json",
+      "sha256": "8910fac508c36dd202486fd01b23cdc9967a78163fcb239647c6dfa7687c4dae"
+    },
+    "exp3": {
+      "path": "artifacts/part4_mac/exp3/EXPERIMENT3_RTL_SEMANTICS.json",
+      "sha256": "136232f29ec86ccdcc25b528e184fc2f0cfcd83c71df65d117612a04d5187ddc"
+    },
+    "exp4": {
+      "path": "artifacts/part4_mac/exp4/EXPERIMENT4_RTL_MEMORY.json",
+      "sha256": "1d1ce6ea6809a163aaca2f48fed5a30efc6523a7d86bd88ff2919881c07145af"
+    },
+    "exp5": {
+      "path": "artifacts/part4_mac/exp5/EXPERIMENT5_REAL_WORKLOAD_V2.json",
+      "sha256": "394fbc854325b83780788107c739d83052d73d2d635fac2f30acb808895e14ad"
+    },
+    "exp6": {
+      "path": "artifacts/part4_mac/exp6/EXPERIMENT6_TRACE_INVARIANCE.json",
+      "sha256": "303a2e42ea33c58f66c2d4a6eb328dc82230ecd96d28f187299e0b7a554cdddf"
+    },
+    "exp7": {
+      "path": "artifacts/part4_mac/exp7/EXPERIMENT7_KERNEL_BOUNDS.json",
+      "sha256": "8793b5d40129a20c03bc8f862222d55c37807aeba68cfa48378228fc0bec4db3"
+    },
+    "exp8": {
+      "path": "artifacts/part4_mac/exp8/EXPERIMENT8_GENERIC_SYNTHESIS.json",
+      "sha256": "bddd5bcf7849ca959c5161ca843c14f6680717a050f9812ebdca90ce66903d53"
+    },
+    "rtl_controller": {
+      "path": "part4/rtl/embodicore_semantic_controller.sv",
+      "sha256": "0a7a4e1b86dde4a7da39619fa7d77d9459a9e8fc910ea17afe1b02a12eb7d05d"
+    },
+    "rtl_ingress": {
+      "path": "part4/rtl/embodicore_condition_ingress.sv",
+      "sha256": "3162e92e6c9aa20a44be950c9f8358211b20c30c7e9e5428b09360c0a7588bc3"
+    }
+  },
+  "next_stage": "freeze paper's Mac evidence, then optionally add one minimal PG2K400 synthesis/correctness anchor"
+}
