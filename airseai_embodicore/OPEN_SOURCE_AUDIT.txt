@@ -1,0 +1,43 @@
+AIRSEAI EmbodiCore Open-Source Audit
+====================================
+Generated: Tue Aug 11 15:12:17 CST 2026
+Primary source: /Users/ShaoshanLiu_1/workspace/AIRSEAI-EmbodiCore
+Legacy fallback: /Users/ShaoshanLiu_1/AIRSEAI-EmbodiCore
+Target: /Users/ShaoshanLiu_1/workspace/AIRSEAI-1.0/airseai_embodicore
+
+Target size:
+192K	/Users/ShaoshanLiu_1/workspace/AIRSEAI-1.0/airseai_embodicore
+
+Target file count:
+39
+
+
+Verification:
+
+AIRSEAI EmbodiCore release verification
+Target: /Users/ShaoshanLiu_1/workspace/AIRSEAI-1.0/airseai_embodicore
+
+  [PASS] README.md
+  [PASS] CITATION.cff
+  [PASS] THIRD_PARTY.md
+  [PASS] REPRODUCIBILITY.md
+  [PASS] ARTIFACT_STATUS.md
+  [PASS] scripts/run_sample.sh
+  [PASS] examples/minimal_semantic_contract/sample.py
+  [PASS] minimal semantic sample
+  [PENDING] results/part4/PART4_MAC_FINAL.json
+  [PENDING] results/part4/paper_ready_results.csv
+  [PENDING] results/part4/CLAIMS.md
+  [PENDING] rtl/embodicore_semantic_controller.sv
+  [PENDING] rtl/embodicore_condition_ingress.sv
+  [PASS] open-source hygiene
+  [PASS] no files >50 MiB
+  [PASS] high-confidence secret scan
+
+Failures: 0
+Pending optional artifacts: 5
+
+AIRSEAI EmbodiCore core release verification: PASS
+Optional research evidence remains PENDING; see ARTIFACT_STATUS.md.
+
+FINAL STATUS: CORE ARTIFACT READY; OPTIONAL EVIDENCE MAY BE PENDING

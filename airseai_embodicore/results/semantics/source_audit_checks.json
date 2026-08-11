@@ -1,0 +1,15 @@
+{
+  "checks": {
+    "ddim_loop_exists": true,
+    "global_cond_passed_to_model": true,
+    "trajectory_updated_by_scheduler": true,
+    "global_cond_formed_from_observation": true,
+    "mamba_mixer_called_without_explicit_inference_params": true,
+    "official_mamba_checks_inference_params": true,
+    "film_config_present": true,
+    "condition_concat_present": true
+  },
+  "source_audit_pass": true,
+  "mamba_policy_commit": "4dc5b4f440090438d17ef30d460988381ef9913d",
+  "state_spaces_mamba_commit": "e9594ce1c732d97440f0332fdc43170a2294dbfa"
+}
