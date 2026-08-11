@@ -15,7 +15,7 @@ shasum -a 256 -c MANIFEST.sha256 >/dev/null
 echo "  Release manifest: PASS"
 
 if command -v iverilog >/dev/null 2>&1; then
-  TMP="$(mktemp -t embodicore_v8).vvp"
+  TMP="$(mktemp "${TMPDIR:-/tmp}/embodicore_v8.XXXXXX")"
   trap 'rm -f "$TMP"' EXIT
   iverilog -g2012 -o "$TMP" \
     rtl/embodicore_semantic_controller.sv \
