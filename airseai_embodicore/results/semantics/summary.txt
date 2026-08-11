@@ -1,0 +1,55 @@
+EmbodiCore Part I Summary — v11
+==================================
+
+Machine architecture: arm64
+Python: 3.11.5
+PyTorch: 2.13.0
+MPS available: True
+
+SOURCE AUDIT
+------------
+Source audit PASS: True
+Mamba-Policy commit: 4dc5b4f440090438d17ef30d460988381ef9913d
+state-spaces/mamba commit: e9594ce1c732d97440f0332fdc43170a2294dbfa
+
+REFERENCE CONSISTENCY
+---------------------
+CPU/MPS reference max abs error: 2.2351741790771484e-08
+CPU/MPS reference mean abs error: 2.600446524780864e-10
+MPS consistency PASS: True
+
+LEGAL REUSE
+-----------
+Policy-local condition reuse CPU max abs error: 1.2665987014770508e-07
+Policy-local condition reuse CPU mean abs error: 2.118195041589388e-08
+Legal reuse PASS: True
+
+ILLEGAL CROSS-DOMAIN STATE CARRY
+--------------------------------
+Output max abs error: 0.002861432731151581
+Output mean abs error: 0.00021553030819632113
+State max abs error: 0.016861990094184875
+State mean abs error: 0.0017774857115000486
+Illegal scan-state carry negative-control PASS: True
+
+RESET-BOUNDARY NEGATIVE CONTROL
+-------------------------------
+Stale condition after new observation max abs error: 1.3898015022277832
+Stale condition after new observation mean abs error: 0.2623358368873596
+New-observation reset negative-control PASS: True
+
+EXECUTION CONTRACT
+------------------
+Schema: <lifetime, reset_event, update_event, legal_reuse_scope>
+Contract objects: 8
+Source/dependency inferable or compiler-candidate objects: 6
+Objects requiring explicit policy-boundary semantic assertion: 2
+
+PART I CLAIM SUPPORTED
+----------------------
+Part I supports only the source-level/numerical claim that policy execution
+context constrains legal state persistence and cross-call reuse.
+It does NOT yet establish real-checkpoint action error, FPGA benefit,
+contract-agnostic DSE ranking, or closed-loop success.
+
+OVERALL PART I: PASS

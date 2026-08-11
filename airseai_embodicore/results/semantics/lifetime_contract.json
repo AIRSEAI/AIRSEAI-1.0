@@ -1,0 +1,96 @@
+{
+  "schema_version": "0.2-v11",
+  "paper_claim": "For stateful embodied AI, hardware state lifetime is a property of the policy execution context, not of the model graph alone.",
+  "generic_nested_domains": [
+    "operator_execution",
+    "policy_internal_iteration",
+    "policy_or_control_invocation",
+    "episode"
+  ],
+  "mamba_policy_instantiation": [
+    "scan",
+    "denoise",
+    "policy",
+    "episode"
+  ],
+  "contract_schema": [
+    "lifetime",
+    "reset_event",
+    "update_event",
+    "legal_reuse_scope"
+  ],
+  "objects": [
+    {
+      "name": "mamba_selective_scan_state",
+      "lifetime": "scan",
+      "reset_event": "new_independent_xmamba_forward",
+      "update_event": "sequence_element",
+      "legal_reuse_scope": "within_current_scan_only",
+      "inference": "source_semantics_plus_explicit_policy_boundary",
+      "notes": "MambaVisionBlock invokes the mixer without inference_params."
+    },
+    {
+      "name": "diffusion_trajectory",
+      "lifetime": "denoise",
+      "reset_event": "new_policy_sampling_invocation",
+      "update_event": "scheduler_step",
+      "legal_reuse_scope": "current_denoising_step_as_input_then_updated",
+      "inference": "source_dataflow"
+    },
+    {
+      "name": "diffusion_timestep",
+      "lifetime": "denoise",
+      "reset_event": "new_scheduler_iteration",
+      "update_event": "each_ddim_iteration",
+      "legal_reuse_scope": "current_denoising_step_only",
+      "inference": "source_loop_variable"
+    },
+    {
+      "name": "timestep_embedding",
+      "lifetime": "denoise",
+      "reset_event": "new_scheduler_iteration",
+      "update_event": "derived_from_diffusion_timestep",
+      "legal_reuse_scope": "current_denoising_step_only",
+      "inference": "dependency_analysis"
+    },
+    {
+      "name": "observation_global_condition",
+      "lifetime": "policy",
+      "reset_event": "new_observation_or_new_policy_invocation",
+      "update_event": "observation_encoder",
+      "legal_reuse_scope": "across_denoising_steps_while_observation_is_fixed",
+      "inference": "source_loop_invariance"
+    },
+    {
+      "name": "global_condition_linear_contribution",
+      "lifetime": "policy",
+      "reset_event": "new_observation_or_new_policy_invocation",
+      "update_event": "condition_projection",
+      "legal_reuse_scope": "across_denoising_steps_if_dependency_analysis_proves_invariance",
+      "inference": "compiler_candidate_from_algebra_plus_dependency_analysis"
+    },
+    {
+      "name": "combined_timestep_global_feature",
+      "lifetime": "denoise",
+      "reset_event": "new_scheduler_iteration",
+      "update_event": "concat_timestep_embedding_and_global_condition",
+      "legal_reuse_scope": "current_denoising_step_only",
+      "inference": "dependency_analysis"
+    },
+    {
+      "name": "policy_local_cache_epoch",
+      "lifetime": "policy",
+      "reset_event": "new_observation",
+      "update_event": "policy_invocation_start",
+      "legal_reuse_scope": "same_observation_only",
+      "inference": "explicit_policy_boundary"
+    }
+  ],
+  "not_claimed_in_part1": [
+    "real-checkpoint action error",
+    "closed-loop task success",
+    "FPGA latency/traffic/energy",
+    "contract-agnostic DSE ranking",
+    "cross-morphology policy portability"
+  ]
+}
