@@ -1,40 +1,40 @@
 # EmbodiCore Current Claim Registry
 
-This registry supersedes the **hardware-status wording** in the historical
-pre-handoff `CLAIMS_PRE_HANDOFF.md`; it does not modify that frozen file.
+This registry supersedes hardware-status wording in the historical pre-handoff
+record without modifying that frozen file.
 
-## Supported
+## Supported by shipped evidence
 
-- 4,096 structural candidates; 3,664 resource-feasible at budget 0.80; 687
-  legal+feasible.
-- Candidate 759 is the frozen legal point; candidate 4087 is the matched
-  agnostic negative control.
-- Stale-condition mean action L2: 0.329 over 96 within-episode updates and
-  10.61 over four sampled reset boundaries.
-- P1 executed-action p99 L2: 8.86e-4; max: 1.29e-3; 900/900 under
+- Source-level semantic necessity and negative controls under `results/semantics/`.
+- Frozen Part-III record: 4,096 structural candidates; 3,664 resource-feasible
+  at budget 0.80; 687 legal+feasible.
+- Frozen candidate identities: legal 759; matched agnostic 4087.
+- Frozen stale-condition action record: 0.329 over 96 within-episode updates;
+  10.61 over four sampled reset-boundary comparisons.
+- Frozen P1 action record: p99 8.86e-4; max 1.29e-3; 900/900 under
   epsilon_a=0.10.
-- 9,000 / 9,000 required scan resets.
-- condition ingress: 4,608,000 B -> 460,800 B, 90% reduction / 10x ratio.
-- no-reset stress: 8,990 stale-condition uses; 8,999 illegal scan carries.
-- generic semantic-controller delta: +1 LUT / +0 FF versus Matched-NoReuse.
-- PG2K400 physical anchor: self-test 294 LUT / 252 FF; condition ingress
-  173 LUT / 162 FF; semantic controller 2 LUT / 2 FF.
-- PG2K400 timing screenshot: 50.0000 MHz requested, 307.4085 MHz Fmax,
-  +16.747 ns slack.
+- RTL evidence: 9,000/9,000 required scan resets; condition ingress
+  4,608,000 B -> 460,800 B; explicit no-reset stress counts 8,990/8,999.
+- Generic semantic-controller delta: +1 LUT / +0 FF versus Matched-NoReuse.
+- PG2K400 physical anchor: 294/252 self-test top, 173/162 ingress, 2/2
+  semantic controller; 50 MHz requested, 307.4085 MHz Fmax, +16.747 ns slack.
+
+## Evidence qualification
+
+The DSE and action-fidelity values above are **supported as frozen claim
+records**, not as independently regenerated results from the current public
+checkout. Original Part-III source/raw result files were not recovered.
 
 ## Explicitly blocked
 
+- Claiming the frozen Part-III summary is raw DSE evidence.
+- Claiming the reference semantic filter reconstructs the historical Part-III
+  optimizer/cost model.
 - 10x whole-policy or whole-accelerator speedup.
 - 90% end-to-end latency reduction.
-- full 12-mixer measured FPGA speedup.
-- full Mamba accelerator area inferred from semantic-control logic.
-- board-level policy-action correctness inferred from the self-test/LED.
-- cross-device performance portability.
+- Full 12-mixer measured FPGA speedup.
+- Full Mamba accelerator area inferred from semantic-control logic.
+- Board-level policy-action correctness inferred from the self-test/LED.
+- Cross-device performance portability.
 - Agnostic-4087 stress-test counts described as empirical episode-boundary
   statistics.
-
-## Archival qualification
-
-If original Part-III DSE/fidelity files are not recovered from the local
-machine, the release ships a machine-readable frozen result record and labels
-the raw-archive gap explicitly. It never fabricates raw candidate rows.

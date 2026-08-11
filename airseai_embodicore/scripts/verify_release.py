@@ -35,7 +35,8 @@ def sha256(p):
 # Required documentation / evidence skeleton
 for rel in [
     "README.md","ARTIFACT.md","REPRODUCIBILITY.md","THIRD_PARTY.md",
-    "PROVENANCE.json","EVIDENCE_STATUS.md",
+    "PROVENANCE.json","EVIDENCE_STATUS.md","RELEASE_POLICY.md",
+    "compiler/README.md","results/frozen/README.md","results/raw_part3/README.md",
     "results/frozen/PART3_FROZEN_SUMMARY.json",
     "results/frozen/PAPER_CLAIM_INDEX.csv",
     "results/part4/PART4_MAC_FINAL.json",
@@ -150,22 +151,48 @@ for key, rel in [
         req(sha256(ROOT/rel)==pg.get("evidence",{}).get(key,{}).get("sha256"),
             f"PG screenshot hash mismatch: {rel}")
 
+# Provenance / artifact-classification guardrails
+prov=loadj("PROVENANCE.json")
+eq=prov.get("evidence_sources",{})
+req(eq.get("part3_original_source_recovered") is False,
+    "Part-III source provenance must remain NOT RECOVERED for this release")
+req(eq.get("part3_original_results_recovered") is False,
+    "Part-III raw-result provenance must remain NOT RECOVERED for this release")
+req(prov.get("artifact_classification")=="claim-audit artifact plus reference implementation",
+    "missing/incorrect artifact classification")
+
+req("derived" in str(p3.get("provenance_status","")).lower(),
+    "Part-III frozen summary must identify derived/frozen provenance")
+
+raw_dir=ROOT/"results/raw_part3"
+raw_payload=[]
+if raw_dir.exists():
+    for q in raw_dir.rglob("*"):
+        if q.is_file() and q.name.lower() not in {"readme.md","not_recovered.md"}:
+            raw_payload.append(q)
+req(not raw_payload,
+    "PROVENANCE says Part-III raw archive is not recovered, but raw payload files are present")
+
+raw_note=(ROOT/"results/raw_part3/README.md").read_text(errors="ignore") if (ROOT/"results/raw_part3/README.md").is_file() else ""
+req("NOT RECOVERED" in raw_note,
+    "raw Part-III status README must explicitly say NOT RECOVERED")
+
 # Claim-boundary prose must remain explicit in README.
 readme=(ROOT/"README.md").read_text(errors="ignore")
+readme_norm=" ".join(readme.split())
 for phrase in [
+    "claim-audit artifact plus reference implementation",
     "not a 10x whole-policy speedup",
     "physical realizability",
     "not evidence for a full 12-mixer Mamba accelerator",
-    "does **not** manufacture a 4,096-row candidate table",
+    "does not manufacture a 4,096-row candidate table",
+    "Not independently rerunnable",
 ]:
-    req(phrase in readme, f"README missing claim boundary: {phrase}")
+    req(phrase in readme_norm, f"README missing claim boundary: {phrase}")
 
-# Report whether original Part-III raw archive was recovered.
-raw=ROOT/"results/raw_part3"
-raw_files=list(raw.glob("**/*")) if raw.exists() else []
-raw_files=[p for p in raw_files if p.is_file()]
-if raw_files:
-    raw_status=f"RECOVERED ({len(raw_files)} files)"
+# Report original Part-III archival status from provenance.
+if eq.get("part3_original_source_recovered") or eq.get("part3_original_results_recovered"):
+    raw_status="RECOVERED (provenance says original Part-III material is present)"
 else:
     raw_status="NOT RECOVERED; frozen claim record shipped and gap disclosed"
 

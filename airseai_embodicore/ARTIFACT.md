@@ -1,44 +1,45 @@
 # EmbodiCore Artifact Evidence Map
 
-This file maps every major manuscript claim to the evidence actually shipped
-in the AIRSEAI artifact. It also distinguishes original/raw material from
-frozen/derived indexes.
+This map distinguishes independently rerunnable material, original frozen
+structured evidence, derived/frozen claim records, and post-handoff physical
+evidence.
 
-| Manuscript claim | Evidence | Status |
+| Manuscript claim | Primary shipped evidence | Public status |
 |---|---|---|
-| execution lifetime affects correctness | `results/semantics/`, `results/frozen/PART3_FROZEN_SUMMARY.json` | source + frozen result |
-| 4,096 / 3,664 / 687 DSE | `results/frozen/PART3_FROZEN_SUMMARY.json`; `results/raw_part3/` when discovered | frozen record; raw archive optional/discovered |
-| agnostic top-20 illegal | Part-III frozen record | frozen result |
-| candidate 759 vs 4087 | Part-III frozen record + `results/part4/PART4_MAC_FINAL.json` | frozen result |
-| stale condition 0.329 / 10.61 | Part-III frozen record | frozen result |
-| P1 p99 action L2 8.86e-4; 900/900 pass | Part-III frozen record | frozen result |
-| 9,000 required resets | `results/part4/EXPERIMENT3_RTL_SEMANTICS.json` + final freeze | original frozen structured evidence |
+| execution lifetime affects correctness | `semantics/`, `results/semantics/` | source/rerunnable |
+| 4,096 / 3,664 / 687 DSE | `results/frozen/PART3_FROZEN_SUMMARY.json` | **frozen claim record; original DSE archive not recovered** |
+| agnostic top-20 illegal | Part-III frozen record | frozen claim record |
+| candidate 759 vs 4087 | Part-III frozen record + Part-IV freeze | frozen claim record |
+| stale-condition 0.329 / 10.61 | Part-III frozen record | frozen claim record |
+| P1 p99 8.86e-4; 900/900 | Part-III frozen record | frozen claim record; raw replay unavailable |
+| 9,000 required resets | `EXPERIMENT3_RTL_SEMANTICS.json` + final freeze | original frozen structured evidence |
 | 10x condition ingress | Experiment 3/4 + final freeze | original frozen structured evidence |
 | 8,990 stale uses / 8,999 illegal carries | Experiment 3 + final freeze | explicit stress-test evidence |
-| +1 LUT / +0 FF generic semantic controller | final freeze | frozen Yosys/ABC result |
-| exact semantic RTL | `rtl/embodicore_semantic_controller.sv`, `rtl/embodicore_condition_ingress.sv` | exact files, hash checked |
-| PG2K400 294/252; 173/162; 2/2 | `hardware/pg2k400/evidence/PG2K400_PHYSICAL_RESULTS.json` + resource screenshot | post-handoff primary evidence |
-| PG2K400 307.4085 MHz / +16.747 ns | post-handoff JSON + timing screenshot | post-handoff primary evidence |
+| +1 LUT / +0 FF generic controller | final freeze | frozen Yosys/ABC result |
+| exact semantic RTL | `rtl/*.sv` | exact files, hash checked |
+| PG2K400 294/252; 173/162; 2/2 | post-handoff JSON + resource screenshot | primary physical evidence |
+| PG2K400 307.4085 MHz / +16.747 ns | post-handoff JSON + timing screenshot | primary physical evidence |
+
+## Part-III qualification
+
+The original Part-III generator/cost model, 4,096-row candidate archive, and
+raw replay arrays were not recovered into this public release. The Part-III
+summary is therefore suitable for **claim consistency/audit**, but not an
+independent rerun of the historical DSE. `results/raw_part3/README.md` makes
+that archival status explicit.
+
+The included `compiler/reference_semantic_filter.py` is a transparent reference
+implementation of legality filtering. It must not be described as a
+reconstruction of the missing historical Part-III optimizer.
 
 ## Evidence chronology
 
-The immutable Mac freeze predates the PG2K400 implementation. Consequently its
-`coverage.PG2K400_anchor_complete` field is false. V7 does not edit that file.
-The later physical results are represented by a separate post-handoff record.
-
-## Raw Part-III archival status
-
-V7 searches known EmbodiCore workspaces for original Part-III source and files
-such as `candidates_all.csv`, `legal_candidates.csv`,
-`PART3_STAGE3_5_COMPLETE.json`, and DSE/fidelity JSON/CSV files. Anything found
-is copied without changing its contents.
-
-If those files are absent, `PART3_FROZEN_SUMMARY.json` remains an auditable
-claim record, **not** a substitute falsely labeled as raw data. The release
-verifier reports the raw-archive status separately.
+The immutable Mac freeze predates the PG2K400 implementation, so its
+`coverage.PG2K400_anchor_complete` remains false. The later board evidence is
+stored separately rather than post-hoc editing the historical freeze.
 
 ## Non-claims
 
-This artifact must not be cited as evidence for full-policy FPGA acceleration,
-a complete 12-mixer arithmetic datapath, board-level policy-action numerical
-correctness, or cross-device performance portability.
+This artifact is not evidence for full-policy FPGA acceleration, a complete
+12-mixer arithmetic datapath, board-level policy-action numerical correctness,
+or cross-device performance portability.

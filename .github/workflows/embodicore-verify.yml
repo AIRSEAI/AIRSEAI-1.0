@@ -1,0 +1,39 @@
+name: EmbodiCore artifact verification
+
+on:
+  pull_request:
+    paths:
+      - 'airseai_embodicore/**'
+      - '.github/workflows/embodicore-verify.yml'
+  push:
+    branches: [ main ]
+    paths:
+      - 'airseai_embodicore/**'
+      - '.github/workflows/embodicore-verify.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Icarus Verilog
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y iverilog
+
+      - name: Run EmbodiCore fresh-checkout verifier
+        working-directory: airseai_embodicore
+        run: bash scripts/verify_release.sh
+
+      - name: Assert advertised final marker
+        working-directory: airseai_embodicore
+        run: |
+          bash scripts/verify_release.sh | tee /tmp/embodicore_verify.log
+          grep -Fq 'EMBODICORE CAL CLAIM-AUDIT ARTIFACT: PASS' /tmp/embodicore_verify.log
