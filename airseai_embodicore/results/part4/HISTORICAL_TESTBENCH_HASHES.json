@@ -1,0 +1,14 @@
+{
+  "record_type": "historical_testbench_hash_index",
+  "semantic_controller_testbench": {
+    "path": "part4/tb/tb_semantic_controller.sv",
+    "sha256": "83359faf4c3d704285ed7d4d1eb47266547eaf73b549aa4c53434b168e99286f",
+    "source_shipped_in_v7": false
+  },
+  "condition_ingress_testbench": {
+    "path": "part4/tb/tb_condition_ingress.sv",
+    "sha256": "fe2619a0d982d20de624a9d3ff36fb26608e7a42d7d10059e54331bb0c98eeef",
+    "source_shipped_in_v7": false
+  },
+  "note": "The exact historical Mac testbench source was not present in the current research-folder snapshot or FPGA handoff zip. Its hashes remain preserved in the original experiment JSON. V7 ships the exact FPGA self-test testbench instead and does not fabricate files under the historical hashes."
+}

@@ -1,0 +1,34 @@
+{
+  "experiment": "EmbodiCore PG2K400 physical anchor",
+  "device": "PG2K400-6IFFBG676",
+  "board_clock_hz": 50000000,
+
+  "semantic_configuration": {
+    "candidate": 759,
+    "condition_lifetime": "policy",
+    "scan_lifetime": "scan",
+    "condition_bus_width_bits": 128
+  },
+
+  "functional_expected": {
+    "condition_loads": 900,
+    "scan_resets": 9000,
+    "condition_ingress_loads": 900,
+    "condition_ingress_beats": 28800,
+    "condition_ingress_stall_cycles": 28800,
+    "pass_led": 1
+  },
+
+  "physical_results_to_return": {
+    "pds_version": "FILL",
+    "device": "FILL",
+    "LUT": "FILL",
+    "FF": "FILL",
+    "BRAM": "FILL",
+    "APM": "FILL",
+    "clock_constraint_MHz": "FILL",
+    "WNS_ns": "FILL",
+    "timing_met": "FILL",
+    "board_selftest": "PASS/FAIL"
+  }
+}

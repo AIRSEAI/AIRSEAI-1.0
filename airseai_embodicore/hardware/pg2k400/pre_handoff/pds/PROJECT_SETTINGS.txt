@@ -1,0 +1,22 @@
+Target device:
+PG2K400-6IFFBG676
+
+Top:
+embodicore_pg_selftest_top
+
+Sources:
+rtl/embodicore_semantic_controller.sv
+rtl/embodicore_condition_ingress.sv
+rtl/embodicore_pg_selftest_top.sv
+
+Clock:
+clk_50m = 50 MHz = 20 ns
+
+Physical pin constraints:
+COPY ONLY from the official/reference PG2K400-FFBG676 demo-board project
+for:
+  clk_50m
+  reset_n
+  pass_led
+
+Do not guess pin numbers.

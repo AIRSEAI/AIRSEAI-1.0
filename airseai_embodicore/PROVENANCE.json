@@ -1,0 +1,27 @@
+{
+  "artifact": "EmbodiCore",
+  "artifact_classification": "claim-audit artifact plus reference implementation",
+  "builder": "V7 one-shot recovery builder",
+  "chronology_guardrail": "PART4_MAC_FINAL.json is preserved unchanged even though later PG2K400 evidence exists.",
+  "evidence_sources": {
+    "part1_part2": "current research workspace",
+    "part3_frozen_summary": "V7 support record derived from the previously frozen Part III.5 result write-up",
+    "part3_original_results_recovered": false,
+    "part3_original_source_recovered": false,
+    "part4_mac_freeze": "exact manifest-verified FPGA pre-handoff package",
+    "pg2k400_physical": "post-handoff vendor screenshots retained from the completed board run"
+  },
+  "fresh_checkout_guarantee": "self-contained claim audit; semantic reference/source layers; portable RTL self-test when Icarus is installed",
+  "generated_utc": "2026-08-11T13:33:44.820776+00:00",
+  "not_independently_reproduced_from_public_tree": [
+    "historical 4096-candidate Part-III DSE",
+    "historical Part-III objective/cost ranking",
+    "900-invocation action replay from raw arrays"
+  ],
+  "publication_pinning": "cite an immutable release tag or exact merge commit, not moving main",
+  "research_workspace": "/Users/ShaoshanLiu_1/workspace/AIRSEAI-EmbodiCore",
+  "upstream": {
+    "Mamba-Policy_commit": "4dc5b4f440090438d17ef30d460988381ef9913d",
+    "mamba_commit": "e9594ce1c732d97440f0332fdc43170a2294dbfa"
+  }
+}

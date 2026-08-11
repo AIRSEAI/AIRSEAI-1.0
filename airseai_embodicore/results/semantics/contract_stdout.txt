@@ -1,0 +1,2 @@
+Wrote part1_semantics/lifetime_contract.json
+Contract objects: 8
