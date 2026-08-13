@@ -1,0 +1,9 @@
+{
+  "schema": "embodidata.user_profile.v1",
+  "user_id": "example_user",
+  "hands": {
+    "left": { "hand_length_m": 0.181 },
+    "right": { "hand_length_m": 0.184 }
+  },
+  "notes": "hand_length_m = distal wrist crease -> middle fingertip, hand flat. Create with: python -m handtraj.calibrate_user --user <name> --left <m> --right <m> --out profiles/<name>.json"
+}

@@ -1,0 +1,16 @@
+# Core (all stages except the neural detector)
+numpy>=1.24
+scipy>=1.10
+opencv-python>=4.8
+pandas>=2.0
+pyyaml>=6.0
+
+# Default hand backend (CPU, all platforms)
+mediapipe>=0.10
+
+# Plots (optional -- pipeline degrades gracefully without it)
+matplotlib>=3.7
+
+# --- optional upgrades, install separately -----------------------------
+# HaMeR backend (GPU): github.com/geopavlakos/hamer  -> see GUIDE.md 6.3
+# LeRobot export:      pip install lerobot           -> see GUIDE.md 9
