@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.DS_Store
+*.mov
+*.mp4
+*.avi
+outputs/
+results/
+processed/
+hand_annotation/
+data/
+datasets/

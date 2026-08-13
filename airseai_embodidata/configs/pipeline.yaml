@@ -1,0 +1,55 @@
+# EmbodiData hand-trajectory pipeline configuration.
+# Every key mirrors a dataclass field in handtraj/config.py; anything omitted
+# uses the documented default. Comments = the practical tuning guide.
+
+camera:
+  # Export ARKit's per-frame camera.intrinsics from the app if at all
+  # possible; metric hand depth inherits intrinsics error one-for-one.
+  # Values refer to calib_width x calib_height; the pipeline rescales to the
+  # actual decoded video size automatically.
+  fx: null
+  fy: null
+  cx: null
+  cy: null
+  calib_width: null
+  calib_height: null
+  # 90 if the app records portrait video while ARKit poses refer to the
+  # landscape sensor (the usual iOS situation). Verify with the overlay:
+  # a wrong value makes reprojected trails swim sideways on head rotation.
+  video_rotation: 0
+
+sync:
+  estimate_offset: true        # pose vs IMU consistency check (host clock)
+  stationary_window_s: 3.0     # capture protocol: still 3 s at start & end
+  stationary_gyro_thresh: 0.15
+
+detector:
+  backend: mediapipe           # mediapipe | hamer (GUIDE.md 6.3)
+  max_hands: 2
+  min_det_conf: 0.5
+  min_track_conf: 0.5
+  model_complexity: 1
+  flip_handedness: true        # rear camera (unmirrored) -> flip MP labels
+
+lift:
+  user_profile: null           # profiles/<user>.json  (calibrate_user.py)
+  default_hand_length_m: 0.185 # used only when no profile -- biased!
+  reproj_thresh_px: 10.0       # reject PnP fits worse than this
+  z_range_m: [0.12, 1.5]       # plausible hand-to-head distance
+  depth_dir: null              # per-frame metric depth .npy (LiDAR), optional
+  depth_scale: 1.0
+
+track:
+  sigma_accel: 8.0             # raise for very fast skills (whisking ~15)
+  sigma_meas: 0.02             # per-frame lift noise, meters
+  max_fill_gap_frames: 10      # bridge occlusions up to ~0.3 s at 30 fps
+  reinit_gap_frames: 30        # longer absence -> restart the filter
+
+export:
+  out_subdir: hand_annotation
+  write_csv: true
+  write_npz: true
+  overlay_video: true          # the #1 debugging tool -- keep on until stable
+  overlay_trail_s: 3.0
+  plot: true
+  world_convention: arkit_yup  # arkit_yup | zup (robotics)
