@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """EmbodiData hand-trajectory annotation pipeline ("reverse SLAM").
 
 Recovers metric, gravity-aligned, world-frame 3D hand trajectories from

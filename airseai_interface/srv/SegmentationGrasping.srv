@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Request
 string object
 sensor_msgs/Image image

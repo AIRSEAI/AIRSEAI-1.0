@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Metric 3D lift: hand pose in the *camera* frame from one RGB frame.
 
 This is where the monocular scale ambiguity is broken. A single image

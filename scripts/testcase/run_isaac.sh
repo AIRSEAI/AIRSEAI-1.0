@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 
 tmux new-session -d -s testcase
 tmux split-window -v -t testcase:0.0

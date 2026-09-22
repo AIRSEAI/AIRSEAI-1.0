@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: Apache-2.0
 include "map_builder.lua"
 include "trajectory_builder.lua"
 

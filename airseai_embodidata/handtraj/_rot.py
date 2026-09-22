@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Rotation/Slerp provider: scipy when available, else a minimal pure-numpy
 implementation with the same (subset of) API. Quaternions are (x, y, z, w).
 

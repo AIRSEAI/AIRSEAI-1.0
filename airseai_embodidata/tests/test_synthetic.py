@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Synthetic end-to-end verification of the reverse-SLAM geometry.
 
 Simulates what physically happens during capture, then checks the pipeline

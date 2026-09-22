@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Time synchronization and capture-protocol checks.
 
 pose.csv and imu.csv are stamped by the same iOS host clock, so they should

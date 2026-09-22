@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Per-user hand calibration -- the 'individualized' in individualized data
 collection. One measurement per user, reused across every episode.
 

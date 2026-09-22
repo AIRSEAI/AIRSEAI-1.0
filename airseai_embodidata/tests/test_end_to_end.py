@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Integration test: a synthetic episode written to disk in the EmbodiData
 release layout, processed by the real `run_episode` code path (ingest ->
 sync -> lift -> compose -> track -> export -> QA), with a fake detector

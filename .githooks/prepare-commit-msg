@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
 #
 # Automatically appends a DCO "Signed-off-by" trailer to every commit message.
 #

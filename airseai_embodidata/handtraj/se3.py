@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """SE(3) utilities: quaternions, rigid transforms, interpolation, alignment.
 
 Conventions

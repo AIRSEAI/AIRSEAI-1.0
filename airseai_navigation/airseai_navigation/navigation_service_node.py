@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 import math
 
 from geometry_msgs.msg import PoseStamped, Quaternion
