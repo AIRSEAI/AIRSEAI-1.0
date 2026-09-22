@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Ego-motion: continuous-time camera pose in a gravity-aligned world frame.
 
 This is the "forward SLAM" half of the reverse-SLAM problem -- and on

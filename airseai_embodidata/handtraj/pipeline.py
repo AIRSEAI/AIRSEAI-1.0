@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """End-to-end episode processing: the "reverse SLAM" orchestrator.
 
 Classic SLAM: a static world observed by a moving camera; solve the camera.

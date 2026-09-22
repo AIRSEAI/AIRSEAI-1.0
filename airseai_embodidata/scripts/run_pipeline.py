@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 """Process EmbodiData episodes into world-frame hand-trajectory annotations.
 
 Examples:

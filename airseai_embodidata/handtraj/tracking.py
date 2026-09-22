@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Temporal layer: left/right association, outlier gating, Kalman filtering,
 RTS smoothing, gap filling, and light keypoint smoothing.
 

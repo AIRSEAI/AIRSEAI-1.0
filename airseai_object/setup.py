@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 from glob import glob
 import os
 

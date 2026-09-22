@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 
 # The following steps are taken from the official docker and nvidia documentation. 
 # For detailed information, please refer to https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html

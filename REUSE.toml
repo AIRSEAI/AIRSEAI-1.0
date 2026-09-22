@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Declares licensing for files whose contents cannot carry an in-file SPDX
+# header. See https://reuse.software/spec-3.3/#reusetoml
+
+version = 1
+
+# EmbodiCore release files are pinned by SHA-256 in MANIFEST.sha256 and in the
+# frozen experiment evidence, so their licence is declared here instead.
+[[annotations]]
+path = "airseai_embodicore/**"
+precedence = "aggregate"
+SPDX-License-Identifier = "Apache-2.0"

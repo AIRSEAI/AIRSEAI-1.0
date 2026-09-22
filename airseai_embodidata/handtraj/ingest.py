@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Episode ingestion for the EmbodiData-EgoVIM release layout.
 
 Expected episode folder (per the v1.2 release spec):

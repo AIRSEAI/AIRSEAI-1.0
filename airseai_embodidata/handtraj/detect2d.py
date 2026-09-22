@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Per-frame hand detection: 2D keypoints + a local (hand-rooted) 3D shape.
 
 All backends emit the same `HandObs`, so the geometry stages downstream are

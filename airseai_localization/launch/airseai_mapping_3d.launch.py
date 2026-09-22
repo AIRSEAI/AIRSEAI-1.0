@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, ExecuteProcess
 from launch.conditions import IfCondition, UnlessCondition

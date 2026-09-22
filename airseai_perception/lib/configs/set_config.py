@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 def reset_cfg(config_path, key, value):
     with open(config_path, 'r') as file:
         lines = file.readlines()

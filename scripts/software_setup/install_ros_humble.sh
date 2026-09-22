@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
 
 # The following steps are taken from the official ROS documentation. 
 # For detailed information, please refer to https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html.

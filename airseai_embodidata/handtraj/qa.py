@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """QA metrics per episode -- feeds the release-package qc_report habit of the
 EmbodiData collection guide: every derived annotation ships with quality
 evidence so bad episodes are caught before training or release.

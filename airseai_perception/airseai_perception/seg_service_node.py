@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 import yaml
 
 from cv_bridge import CvBridge

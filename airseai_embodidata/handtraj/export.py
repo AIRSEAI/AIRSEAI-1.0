@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Outputs: hands.csv, hands.npz, hand_annotation.json, overlay video, plots.
 
 Design goal: everything a downstream consumer (policy training, skill
