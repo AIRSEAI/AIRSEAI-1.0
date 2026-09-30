@@ -270,10 +270,10 @@ source /opt/ros/humble/setup.bash
 conda deactivate
 colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --symlink-install --packages-up-to neo_local_planner2 airseai_chat airseai_description airseai_interface airseai_localization airseai_navigation airseai_object airseai_planner
 
-conda activate airseai_perception
+conda activate airship_perception
 colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --symlink-install --packages-up-to airseai_perception
 
-conda activate airseai_grasp
+conda activate airship_grasp
 colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --symlink-install --packages-up-to airseai_grasp
 ```
 
